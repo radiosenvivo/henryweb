@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="theme-color" content="#0f1115">
-  <title>Radio Henry</title>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Radio Henry Web </title>
   <style>
     * {
       margin: 0;
@@ -160,7 +162,7 @@
         fetchpriority="high">
     </div>
 
-    <!-- Reproductor -->
+    <!-- Reproductor original -->
     <div class="player-wrapper">
       <div id="emisora-pro-widget"
            data-title="Radio Henry"
@@ -194,7 +196,7 @@
   </div>
 
   <script>
-    // Reloj digital - Hora de Buenos Aires (API nativa del navegador, gratuita)
+    // Reloj digital - Hora de Buenos Aires
     (function () {
       const el = document.getElementById('clock');
       if (!el) return;
@@ -219,6 +221,58 @@
 
       update();
       setInterval(update, 1000);
+    })();
+
+    // === Mejoras para que no se corte al bloquear el celular ===
+    (function () {
+      // Media Session: ayuda a que el sistema trate el audio como "en reproducción"
+      // y no lo suspenda tan fácil en segundo plano
+      if ('mediaSession' in navigator) {
+        try {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: 'Radio Henry',
+            artist: 'Señal en vivo',
+            album: 'Radio Henry',
+            artwork: [
+              { src: 'https://imgfz.com/i/umKbrAt.jpeg', sizes: '512x512', type: 'image/jpeg' }
+            ]
+          });
+          navigator.mediaSession.playbackState = 'playing';
+        } catch (e) {}
+      }
+
+      // Screen Wake Lock (si el navegador lo permite): evita que la pantalla se duerma
+      // mientras se escucha (útil en algunos Android)
+      let wakeLock = null;
+      async function requestWakeLock() {
+        if (!('wakeLock' in navigator)) return;
+        try {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLock.addEventListener('release', () => { wakeLock = null; });
+        } catch (e) {}
+      }
+
+      // Al volver a la pestaña / desbloquear, re-solicitar wake lock y refrescar Media Session
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          requestWakeLock();
+          if ('mediaSession' in navigator) {
+            try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
+          }
+        }
+      });
+
+      // Intentar wake lock al cargar (el usuario tiene que haber interactuado antes en muchos navegadores)
+      document.addEventListener('click', function once() {
+        requestWakeLock();
+        document.removeEventListener('click', once);
+      }, { once: true });
+
+      // Keep-alive suave: evita que el navegador suspenda completamente el JS
+      // cuando la pestaña está en segundo plano (no interrumpe el audio)
+      setInterval(function () {
+        // vacío a propósito: solo mantiene un timer activo
+      }, 20000);
     })();
   </script>
 
