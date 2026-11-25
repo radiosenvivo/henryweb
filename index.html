@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f1115">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Radio Henry Web </title>
+  <title>Radio Henry</title>
   <style>
     * {
       margin: 0;
@@ -28,21 +28,33 @@
 
     .container {
       width: 100%;
-      max-width: 420px;
+      max-width: 360px;
       display: flex;
       flex-direction: column;
       align-items: stretch;
     }
 
-    /* Portada a ancho completo */
-    .cover {
-      width: 100%;
-      height: 320px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    .player-card {
+      background: #181a1f;
       border: 1px solid #2c303a;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cover {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 3px solid #2c303a;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
       background: #1a1d24;
     }
 
@@ -58,91 +70,26 @@
       width: 100%;
     }
 
-    /* Fila inferior: WhatsApp izquierda + Reloj derecha */
-    .bottom-row {
-      margin-top: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .whatsapp-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 11px 18px;
-      background: #25D366;
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 10px;
-      box-shadow: 0 3px 12px rgba(37, 211, 102, 0.3);
-      transition: background 0.2s, transform 0.15s;
-    }
-
-    .whatsapp-btn:hover {
-      background: #1ebe57;
-      transform: translateY(-1px);
-    }
-
-    .whatsapp-btn svg {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-
-    /* Reloj digital - lado derecho */
-    .clock-box {
-      flex-shrink: 0;
-      background: #181a1f;
-      border: 1px solid #2c303a;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 14px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
-      min-width: 90px;
-    }
-
-    .clock-time {
-      font-size: 1.15rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.02em;
-      color: #f8f9fa;
-      line-height: 1.2;
-    }
-
-    .clock-label {
-      font-size: 0.6rem;
-      color: #adb5bd;
-      margin-top: 2px;
-      text-align: center;
-      line-height: 1.2;
+    #emisora-pro-widget {
+      max-width: 100% !important;
     }
 
     .footer {
-      margin-top: 24px;
-      font-size: 0.78rem;
+      margin-top: 18px;
+      font-size: 0.75rem;
       color: #6c757d;
       text-align: center;
     }
 
-    @media (min-width: 480px) {
-      body { padding: 24px; }
-      .clock-time { font-size: 1.2rem; }
+    @media (min-width: 400px) {
+      .container { max-width: 380px; }
+      .cover { width: 130px; height: 130px; }
     }
 
     @media (max-width: 360px) {
       body { padding: 12px; }
-      .cover { height: 200px; border-radius: 10px; }
-      .whatsapp-btn { padding: 10px 14px; font-size: 0.9rem; }
-      .clock-box { padding: 7px 10px; min-width: 80px; }
-      .clock-time { font-size: 1.05rem; }
+      .cover { width: 100px; height: 100px; }
+      .player-card { padding: 12px; gap: 10px; }
     }
   </style>
 </head>
@@ -150,129 +97,47 @@
 
   <div class="container">
 
-    <!-- Portada a ancho completo -->
-    <div class="cover">
-      <img
-        src="https://imgfz.com/i/umKbrAt.jpeg"
-        alt="Radio Henry"
-        width="420"
-        height="230"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high">
-    </div>
+    <div class="player-card">
+      <div class="cover">
+        <img
+          src="https://imgfz.com/i/umKbrAt.jpeg"
+          alt="Radio Henry"
+          width="130"
+          height="130"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high">
+      </div>
 
-    <!-- Reproductor original -->
-    <div class="player-wrapper">
-      <div id="emisora-pro-widget"
-           data-title="Radio Henry"
-           data-emisora-pro="radio-henry-radio"
-           data-script="https://wiget-emisora.pages.dev/radio_web_player.js"></div>
-      <script src="https://wiget-emisora.pages.dev/wiget.js"></script>
-    </div>
-
-    <!-- WhatsApp izquierda + Reloj derecha -->
-    <div class="bottom-row">
-      <a class="whatsapp-btn"
-         href="https://wa.me/541134220329"
-         target="_blank"
-         rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-        WhatsApp
-      </a>
-
-      <div class="clock-box" title="Hora de Buenos Aires">
-        <div class="clock-time" id="clock">--:--</div>
-        <div class="clock-label">Buenos Aires</div>
+      <div class="player-wrapper">
+        <div id="emisora-pro-widget"
+             data-title="Radio Henry Web"
+             data-emisora-pro="radio-henry-radio"
+             data-script="https://wiget-emisora.pages.dev/radio_web_player.js"></div>
+        <script src="https://wiget-emisora.pages.dev/wiget.js"></script>
       </div>
     </div>
 
-  </div>
+    <div class="footer">
+      Radio Henry Web· Señal en vivo
+    </div>
 
-  <div class="footer">
-    Radio Henry · Señal en vivo
   </div>
 
   <script>
-    // Reloj digital - Hora de Buenos Aires
     (function () {
-      const el = document.getElementById('clock');
-      if (!el) return;
-
-      function update() {
-        try {
-          const now = new Date();
-          el.textContent = now.toLocaleTimeString('es-AR', {
-            timeZone: 'America/Argentina/Buenos_Aires',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-          });
-        } catch (e) {
-          el.textContent = new Date().toLocaleTimeString('es-AR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-          });
-        }
-      }
-
-      update();
-      setInterval(update, 1000);
-    })();
-
-    // === Mejoras para que no se corte al bloquear el celular ===
-    (function () {
-      // Media Session: ayuda a que el sistema trate el audio como "en reproducción"
-      // y no lo suspenda tan fácil en segundo plano
       if ('mediaSession' in navigator) {
         try {
           navigator.mediaSession.metadata = new MediaMetadata({
-            title: 'Radio Henry',
+            title: 'Radio Henry Web',
             artist: 'Señal en vivo',
             album: 'Radio Henry',
             artwork: [
               { src: 'https://imgfz.com/i/umKbrAt.jpeg', sizes: '512x512', type: 'image/jpeg' }
             ]
           });
-          navigator.mediaSession.playbackState = 'playing';
         } catch (e) {}
       }
-
-      // Screen Wake Lock (si el navegador lo permite): evita que la pantalla se duerma
-      // mientras se escucha (útil en algunos Android)
-      let wakeLock = null;
-      async function requestWakeLock() {
-        if (!('wakeLock' in navigator)) return;
-        try {
-          wakeLock = await navigator.wakeLock.request('screen');
-          wakeLock.addEventListener('release', () => { wakeLock = null; });
-        } catch (e) {}
-      }
-
-      // Al volver a la pestaña / desbloquear, re-solicitar wake lock y refrescar Media Session
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          requestWakeLock();
-          if ('mediaSession' in navigator) {
-            try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
-          }
-        }
-      });
-
-      // Intentar wake lock al cargar (el usuario tiene que haber interactuado antes en muchos navegadores)
-      document.addEventListener('click', function once() {
-        requestWakeLock();
-        document.removeEventListener('click', once);
-      }, { once: true });
-
-      // Keep-alive suave: evita que el navegador suspenda completamente el JS
-      // cuando la pestaña está en segundo plano (no interrumpe el audio)
-      setInterval(function () {
-        // vacío a propósito: solo mantiene un timer activo
-      }, 20000);
     })();
   </script>
 
